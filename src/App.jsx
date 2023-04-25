@@ -4,26 +4,23 @@ import axios from "axios";
 import "./App.css";
 
 function App() {
-
-  const[services, setServices] = useState([]);
+  const [services, setServices] = useState([]);
+  
   // const apiKey = import.meta.env.VITE_API_KEY;
-  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&q=&facet=carburants_disponibles&facet=carburants_indisponibles&facet=horaires_automate_24_24&facet=services_service&facet=departement&facet=region`;
- 
- 
- const handleSearch = (e) => {
+  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&q=&facet=carburants_disponibles&facet=carburants_indisponibles&facet=services_service&&rows=10`;
+
+  const handleSearch = (e) => {
     e.preventDefault();
     axios.get(baseURL).then((response) => {
-        setServices(response.data.records[0].fields
-       
-        );
-     
+      setServices(Object.values(Object.values(response.data.facet_groups)[2])[1]);
+     console.log(response.data.facet_groups[2]);
     });
   };
- 
+
   console.log(services);
- return(
-  <>
-  <header className="toto">
+  return (
+    <>
+      <header className="toto">
         <form className="tutu">
           {/* <input
             type="text"
@@ -37,8 +34,11 @@ function App() {
             onClick={handleSearch}
           />
         </form>
+      
       </header>
-      <div>{Object.values(services)}</div></>)
+     <ul >{services.map((service)=>(<li key={name}>{service.name}</li>)) }</ul> 
+    </>
+  );
 }
 
 export default App;
