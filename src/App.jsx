@@ -5,37 +5,30 @@ import "./App.css";
 
 function App() {
   const [services, setServices] = useState([]);
-  const[lat, setLat] = useState([]);
-  const[lon, setLon] = useState([]);
-  const[prixDiesel, setPrixDiesel] = useState(0);
+  const [facets, setFacets] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [lat, setLat] = useState("");
+  const [lon, setLon] = useState("");
+  const [prixDiesel, setPrixDiesel] = useState(0);
+
   
-  // const apiKey = import.meta.env.VITE_API_KEY;
-  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&q=&facet=carburants_disponibles&facet=carburants_indisponibles&facet=services_service&facet=latitude&&rows=10`;
+  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&q=&facet=carburants_disponibles&facet=carburants_indisponibles&facet=services&facet=latitude&&rows=10`;
 
   const handleSearch = (e) => {
     e.preventDefault();
     axios.get(baseURL).then((response) => {
-      setServices(
-        Object.values(Object.values(response.data.facet_groups)[2])[1]
-      );
-      setLat(
-      Object.values(Object.values(Object.values(response.data.facet_groups[3].facets)))
-      );
-      console.log(response.data.facet_groups[2]);
-      console.log(Object.values(Object.values(response.data.facet_groups[3].facets)));
+      setRecords(response.data.records);  
+
+      
     });
   };
 
-  console.log(services);
+  
   return (
     <>
       <header className="toto">
         <form className="tutu">
-          {/* <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          /> */}
+     
           <input
             className="tutu"
             type="submit"
@@ -44,14 +37,25 @@ function App() {
           />
         </form>
       </header>
+
+      <table></table>
       <ul>
-        {services.map((service) => (
-          <li key={name}> {service.name}</li>
-        ))}
-      </ul>
-      <ul>
-        {lat.map((lat) => (
-          <li key={name}> {lat.name}</li>
+        {records.map((record) => (
+          <li key="recordid">
+            {" "}
+            <li>  département : {record.fields.departement}   </li>
+            <li> code postal :{record.fields.cp} </li>
+            <li>coordonnées :lon:{record.fields.geom[0]} lat:{record.fields.geom[1]}</li>
+            {console.log(record.fields.prix)}
+              <li> prix des carburants
+                {JSON.parse(record.fields.prix).map((prix_carburant) => (
+                <ul key={prix_carburant["@id"]}>
+                  <li> {prix_carburant["@nom"]}</li>
+                  <li>Prix: {prix_carburant["@valeur"]} €</li>
+                </ul>
+              ))}
+            </li>
+          </li>
         ))}
       </ul>
     </>
