@@ -26,6 +26,19 @@
     transform: rotate(360deg);
   }
 }
+header{
+  display: flex;
+  flex-direction: row;
+}
+ul{
+  display:flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 35px;
+  }
+  li{display: flex;
+  flex-direction: row;
+  gap: 3px;}
 
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
