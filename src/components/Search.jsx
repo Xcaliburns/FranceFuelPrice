@@ -4,7 +4,7 @@ function Search() {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("    ");
 
-  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&&&rows=9987`
+  const baseURL = `https://data.economie.gouv.fr/api/records/1.0/search/?dataset=prix-des-carburants-en-france-flux-instantane-v2&&&rows=200`
 
  useEffect(() => {
   axios.get(baseURL)
