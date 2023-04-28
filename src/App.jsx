@@ -16,7 +16,7 @@ function App() {
   // };
 
   return (
-    <>
+    <body>
       <header className="toto">
         <Search />
         {/* <form className="tutu">
@@ -49,7 +49,7 @@ function App() {
           </li>
         ))}
       </ul> */}
-    </>
+    </body>
   );
 }
 
